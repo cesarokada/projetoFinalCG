@@ -1,5 +1,1 @@
-#ifndef VENTILADOR
-#define VENTILADOR
-
-#endif // VENTILADOR
-
+void drawVentilador(float size, float height, float theta_var);

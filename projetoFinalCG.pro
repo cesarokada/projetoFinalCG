@@ -15,4 +15,17 @@ CONFIG   -= app_bundle
 TEMPLATE = app
 
 
-SOURCES += main.cpp
+SOURCES += main.cpp \
+    tv.cpp \
+    camera.cpp \
+    ventilador.cpp
+
+LIBS += -lglut
+LIBS += -lGL
+LIBS += -lGLU
+
+HEADERS += \
+    tv.h \
+    camera.h \
+    ventilador.h
+

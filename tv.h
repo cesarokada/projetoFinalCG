@@ -1,5 +1,1 @@
-#ifndef TV
-#define TV
-
-#endif // TV
-
+void  drawTV(float size);
