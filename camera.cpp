@@ -10,8 +10,8 @@ float moveStep = 0.5;  // passo do movimento da camera
 float rotStep  = 2.0;  // passo da rotacao da camera
 float mouseSensitivy = 10.0; // fator de sensibilidade do mouse
 
-float xpos, ypos, zpos, // indica a posicao x, y e z da camera na cena
-      xrot, yrot = 0;   // indica a rotacao em x e em y sofrida pela camera.
+float xpos, ypos = 5, zpos = 10, // indica a posicao x, y e z da camera na cena
+      xrot = 25, yrot = 0;   // indica a rotacao em x e em y sofrida pela camera.
 float lastx, lasty;
 float xrotrad, yrotrad;
 
@@ -110,7 +110,7 @@ void camRender() {
   glRotatef(xrot,1.0,0.0,0.0);      // rotacao no eixo x (esquerda e direita)
   glRotatef(yrot,0.0,1.0,0.0);      // rotacao no eixo y (esquerda e direita)
 //  glTranslated(-xpos,-ypos,-zpos);  // transladar a tela para a posicao da camera
-  glTranslated(-xpos,-2,-zpos);  // transladar a tela para a posicao da camera
+  glTranslated(-xpos, -ypos, -zpos);  // transladar a tela para a posicao da camera
 }
 
 /*******************************************************************************

@@ -4,14 +4,6 @@
 #include <ctype.h>
 
 #include "camera.h"
-#include "tv.h"
-#include "ventilador.h"
-
-
-#define GL_COLOR_GROUND glColor3f( 0.74, 0.51, 0.36 )
-#define GL_COLOR_WALL   glColor3f( 0.99, 0.95, 0.8 )
-#define CHAO "chao.jpg"
-
 
 /* GLUT callback Handlers */
 
@@ -52,6 +44,7 @@ void drawAxis()
 int lAmbient = 35;
 int lDiffuse = 65;
 int lSpecular = 50;
+float ar;
 
 void drawLight() {
 
@@ -89,167 +82,6 @@ void drawLight() {
 
 }
 
-
-void drawWalls()
-{
-  int h=15; // tamanho da parede
-  int hx2=h*2; // dimensão do chão
-
-  glPushMatrix();
-
-  GLfloat Ambient[]   = {0.01*lAmbient ,0.01*lAmbient ,0.01*lAmbient ,1.0};
-  GLfloat Diffuse[]   = {0.01*lDiffuse ,0.01*lDiffuse ,0.01*lDiffuse ,1.0};
-  GLfloat Specular[]  = {0.01*lSpecular,0.01*lSpecular,0.01*lSpecular,1.0};
-  GLfloat shi[]  = {10.0};
-  GLfloat no_mat[] = { 0.0, 0.0, 0.0, 1.0 };
-
-  glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, Ambient);
-  glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, Diffuse);
-  glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, Specular);
-  glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, shi);
-  glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, no_mat);
-
-  // CHAO
-  GL_COLOR_GROUND;
-  glBegin(GL_POLYGON);
-    glNormal3f(0.0, 1.0, 0.0);
-
-//    glNormal3f(1.0, 1.0, 1.0);
-    glVertex3f(  -hx2, -2, -hx2 );
-
-//    glNormal3f(1.0, 1.0, -1.0);
-    glVertex3f(  -hx2, -2, hx2 );
-
-///    glNormal3f(-1.0, 1.0, -1.0);
-    glVertex3f(   hx2, -2, hx2 );
-
-//    glNormal3f(-1.0, 1.0, 1.0);
-    glVertex3f(   hx2, -2, -hx2 );
-  glEnd();
-
-  GL_COLOR_WALL;  // cor das paredes
-
-  // ESQUERDA
-  glBegin(GL_POLYGON);
-    glNormal3f(1.0, 0.0, 0.0);
-    glVertex3f(  -h, -2, -h );      // P1 is red
-    glVertex3f(  -h, -2, h );      // P2 is green
-    glVertex3f(  -h, h, h );      // P3 is blue
-    glVertex3f(  -h, h, -h );      // P4 is purple
-
-  glEnd();
-
-  // DIREITA
-  glBegin(GL_POLYGON);
-    glNormal3f(-1.0, 0.0, 0.0);
-    glVertex3f(  h, -2,-h );      // P1 is red
-    glVertex3f(  h, -2, h );      // P2 is green
-    glVertex3f(  h,  h, h );      // P3 is blue
-    glVertex3f(  h,  h,-h );      // P4 is purple
-  glEnd();
-
-  // ATRAS
-  glBegin(GL_POLYGON);
-    glNormal3f(0.0, 0.0, 1.0);
-    glVertex3f(  -h, -2, -h );      // P1 is red
-    glVertex3f(  h, -2, -h );      // P2 is green
-    glVertex3f(  h, h, -h );      // P3 is blue
-    glVertex3f(  -h, h, -h );      // P4 is purple
-  glEnd();
-
-  // FRENTE
-/*  glBegin(GL_POLYGON);
-    glNormal3f(0.0, 0.0, -1.0);
-    glVertex3f(  -h, -2, h );      // P1 is red
-    glVertex3f(  h, -2, h );      // P2 is green
-    glVertex3f(  h, h, h );      // P3 is blue
-    glVertex3f(  -h, h, h );      // P4 is purple
-  glEnd();  */
-  glBegin(GL_POLYGON);
-    glNormal3f(0.0, 0.0, -1.0);
-    glVertex3f(  -h, -2, h );
-    glVertex3f(  -(h/4) , -2, h );
-    glVertex3f(  -(h/4) , h, h );
-    glVertex3f(  -h, h, h );
-  glEnd();
-  glBegin(GL_POLYGON);
-    glNormal3f(0.0, 0.0, -1.0);
-    glVertex3f(  (h/4) , -2, h );
-    glVertex3f(  h , -2, h );
-    glVertex3f(  h , h, h );
-    glVertex3f(  (h/4), h, h );
-  glEnd();
-  glBegin(GL_POLYGON);
-    glNormal3f(0.0, 0.0, -1.0);
-    glVertex3f(  -(h/4) , (h/2), h );
-    glVertex3f(   (h/4) , (h/2), h );
-    glVertex3f(   (h/4), h, h );
-    glVertex3f(   -(h/4), h, h );
-  glEnd();
-
-
-  // TETO
-  glBegin(GL_POLYGON);
-    glNormal3f(0.0, -1.0, 0.0);
-    glVertex3f(  -h, h, -h );      // P1 is red
-    glVertex3f(  -h, h, h );      // P2 is green
-    glVertex3f(   h, h, h );      // P3 is blue
-    glVertex3f(   h, h, -h );      // P4 is purple
-  glEnd();
-
-  // Telhado
-  glBegin(GL_POLYGON);
-  glColor3f( 0.74, 0.51, 0.36 );
-    //glVertex3f(5, 30, 20);
-    glVertex3f( -h/20, h+5, -h );      // P1 is red
-    glVertex3f( -h/20, h+5,  h );      // P2 is green
-    glVertex3f(  h+3,  h-1, h );      // P3 is blue
-    glVertex3f(  h+3,  h-1, -h );      // P3 is blue
-  glEnd();
-
-  glBegin(GL_POLYGON);
-    glVertex3f( h/20, h+5, -h );      // P1 is red
-    glVertex3f( h/20, h+5,  h );      // P2 is green
-    glVertex3f(  -h-3,  h-1, h );      // P3 is blue
-    glVertex3f(  -h-3,  h-1, -h );      // P3 is blue
-  glEnd();
-
-  glBegin(GL_POLYGON);
-    glVertex3f( h/20, h+5, h );      // P1 is red
-    glVertex3f( h/20, h-1, h+5 );      // P2 is green
-    glVertex3f(  -h-3,  h-1, h+5 );      // P3 is blue
-    glVertex3f(  -h-3,  h-1, h );      // P3 is blue
-  glEnd();
-
-  glBegin(GL_POLYGON);
-    glVertex3f( h/20, h+5, h );      // P1 is red
-    glVertex3f( h/20, h-1, h+5 );      // P2 is green
-    glVertex3f(  h+3,  h-1, h+5 );      // P3 is blue
-    glVertex3f(  h+3,  h-1, h );      // P3 is blue
-  glEnd();
-
-  // PORTA
-
-  glBegin(GL_POLYGON);
-    GL_COLOR_GROUND;
-    glNormal3f(0.0, 0.0, -1.0);
-    glVertex3f(  -(h/4) , (h/2), h );
-    glVertex3f(   (h/4) , (h/2), h );
-    glVertex3f(   (h/4), -2.0, h );
-    glVertex3f(   -(h/4), -2.0, h );
-  glEnd();
-
-  glColor3f(0.8, 0.8, 0.8);
-  glTranslatef( (h/4) - 0.5, (h/6) ,h);
-  glutSolidSphere(0.2, 24, 24);
-
-
-  glPopMatrix();
-
-}
-
-float ar;
-
 void specificVisualParameter(GLdouble fAspect)
 {
      glMatrixMode( GL_PROJECTION );
@@ -278,6 +110,9 @@ static void display(void)
     const double t = glutGet(GLUT_ELAPSED_TIME) / 1000.0;
     const double a = t*90.0;
 
+    int year = 365;
+    int day = 24;
+
     char title [100];
     sprintf(title,  "Ambient %d | Diffuse: %d | Specular: %d", lAmbient, lDiffuse, lSpecular);
     glutSetWindowTitle(title);
@@ -292,32 +127,83 @@ static void display(void)
 
     drawAxis();  // desenhar eixos
 
-    drawWalls();
-
-    drawVentilador(2.0, 6.0, 0.75);
-
-    // teapot
+    glColor3f (1.0, 0.60, 0.09);
     glPushMatrix();
-      glColor3f(0.2, 0.8, 0.0);
-      glTranslated(0.0, -1.1, 0.0);
-      glutSolidTeapot(1.0);
-    glPopMatrix();
-
-    // outra esfera
-    glPushMatrix();
-      glTranslated(5.0, -1.0, -8.0);    // posicao da luz
-      glutSolidSphere(0.7, 24, 24);
+      glTranslated(0.0, 0.0, 0.0); //MATRIZ DE TRANSLAÇÃO COM A MATRIZ IDENTIDADE!!!
+                                   //SOL NO CENTRO DA IMAGEM, É SÓ ALTERAR OS PARÂMETROS PRA MUDAR A POSIÇÃO
+      glutSolidSphere(0.7, 24, 24); //DESENHA A ESFERA, ALTERA O PRIMEIRO PARÂMETRO PRA AUMENTAR O RAIO
     glPopMatrix();
 
     glPushMatrix();
-      glTranslated(-6.0, -1.0, 7.0);    // posicao da luz
-      glutSolidCube(2.0);
+      glTranslated(0.55, 0.0, 0.0);
+      glColor3f (1.0, 0.0, 0.0);
+      glutSolidSphere(0.05, 10, 8);
     glPopMatrix();
 
+    //VENUS
     glPushMatrix();
-      glTranslatef(-11.0, -2.0, -10.0);
-      glRotatef(30, 0.0, 1.0, 0.0);
-      drawTV(1.5);
+      glTranslated(0.75, 0.0, 0.0);
+      glColor3f (0.8, 0.4, 0.2);
+      glutSolidSphere(0.068, 10, 8);
+    glPopMatrix();
+
+      //TERRA
+    glPushMatrix();
+      glTranslated(1.0, 0.0, 0.0);
+      glColor3f (0.2, 0.2, 1.0);
+      glutSolidSphere(0.08, 10, 8);
+    glPopMatrix();
+
+
+    //LUA
+    glPushMatrix();
+     glTranslated(1.0, 0.0, 0.0);
+     glColor3f(1.0, 1.0, 1.0);
+     glutSolidSphere(0.0216, 10, 8);
+    glPopMatrix();
+
+    //MARTE
+    glPushMatrix();
+      glTranslated (1.2, 0.0, 0.0);
+      glColor3f (0.6, 0.0, 0.0);
+      glutSolidSphere(0.08, 10, 8);
+    glPopMatrix();
+
+    //JUPITER
+    glPushMatrix();
+      glTranslated (1.7, 0.0, 0.0);
+      glColor3f (0.5, 0.0, 0.0);
+      glutSolidSphere(0.1, 10, 8);
+    glPopMatrix();
+
+    //SATURNO
+    glPushMatrix();
+      glTranslated (2.0, 0.0, 0.0);
+      glColor3f (0.5, 0.3, 0.0);
+      glutSolidSphere(0.091, 10, 8);
+    glPopMatrix();
+
+
+    //URANO
+    glPushMatrix();
+      glTranslated (2.3, 0.0, 0.0);
+      glColor3f (0.1, 0.3, 0.6);
+      glutSolidSphere(0.061, 10, 8);
+    glPopMatrix();
+
+
+    //NETUNO
+    glPushMatrix();
+      glTranslated (2.5, 0.0, 0.0);
+      glColor3f (0.1, 0.1, 0.6);
+      glutSolidSphere(0.051, 10, 8);
+    glPopMatrix();
+
+    //PLUTAO
+    glPushMatrix();
+      glTranslated (2.8, 0.0, 0.0);
+      glColor3f (0.1, 0.5, 0.8);
+      glutSolidSphere(0.031, 10, 8);
     glPopMatrix();
 
     glutSwapBuffers();
@@ -371,8 +257,6 @@ idle(void){
     glutPostRedisplay();
 }
 
-
-
 /* Program entry point */
 
 int
@@ -391,7 +275,7 @@ main(int argc, char *argv[])
     glutKeyboardFunc(key);             // teclas
     glutIdleFunc(idle);                // atualiza a tela (display)
 
-    glClearColor(0.45,0.82,0.93,1);
+    glClearColor(0.0,0.0,0.0,1);
 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
