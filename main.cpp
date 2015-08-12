@@ -2,8 +2,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
+#include <math.h>
 
 #include "camera.h"
+
+#define DEG2RAD 3.14159/180.0
 
 /* GLUT callback Handlers */
 
@@ -38,6 +41,22 @@ void drawAxis()
 
     glEnd();
     glEnable(GL_LIGHTING);
+}
+
+void DrawEllipse(float radiusX, float radiusZ)
+{
+   int i;
+
+   glBegin(GL_LINE_LOOP);
+
+   for(i=0;i<360;i++)
+   {
+      float rad = i*DEG2RAD;
+      glVertex3f(cos(rad)*radiusX,
+                  0,sin(rad)*radiusZ);
+   }
+
+   glEnd();
 }
 
 
@@ -98,7 +117,7 @@ void specificVisualParameter(GLdouble fAspect)
 
 static void resize(int width, int height)
 {
-    ar = (float) width / (float) height;
+    ar = (float) (width) / (float) (height);
 
     glViewport(0, 0, width, height);
 
@@ -125,12 +144,13 @@ static void display(void)
 
     drawLight();
 
-    drawAxis();  // desenhar eixos
+    //drawAxis();  // desenhar eixos
+
 
     glColor3f (1.0, 0.60, 0.09);
     glPushMatrix();
       glTranslated(0.0, 0.0, 0.0); //MATRIZ DE TRANSLAÇÃO COM A MATRIZ IDENTIDADE!!!
-                                   //SOL NO CENTRO DA IMAGEM, É SÓ ALTERAR OS PARÂMETROS PRA MUDAR A POSIÇÃO
+                                  //SOL NO CENTRO DA IMAGEM, É SÓ ALTERAR OS PARÂMETROS PRA MUDAR A POSIÇÃO
       glutSolidSphere(0.7, 24, 24); //DESENHA A ESFERA, ALTERA O PRIMEIRO PARÂMETRO PRA AUMENTAR O RAIO
     glPopMatrix();
 
@@ -142,69 +162,75 @@ static void display(void)
 
     //VENUS
     glPushMatrix();
-      glTranslated(0.75, 0.0, 0.0);
+      glTranslated(1.5, 0.0, 0.0);
       glColor3f (0.8, 0.4, 0.2);
       glutSolidSphere(0.068, 10, 8);
     glPopMatrix();
+    DrawEllipse(1.5,0.7);
 
       //TERRA
     glPushMatrix();
-      glTranslated(1.0, 0.0, 0.0);
+      glTranslated(2.0, 0.0, 0.0);
       glColor3f (0.2, 0.2, 1.0);
       glutSolidSphere(0.08, 10, 8);
     glPopMatrix();
+    DrawEllipse(2.0,0.9);
 
 
     //LUA
     glPushMatrix();
-     glTranslated(1.0, 0.0, 0.0);
+     glTranslated(2.0, 0.0, 0.0);
      glColor3f(1.0, 1.0, 1.0);
      glutSolidSphere(0.0216, 10, 8);
     glPopMatrix();
 
     //MARTE
     glPushMatrix();
-      glTranslated (1.2, 0.0, 0.0);
+      glTranslated (2.5, 0.0, 0.0);
       glColor3f (0.6, 0.0, 0.0);
       glutSolidSphere(0.08, 10, 8);
     glPopMatrix();
+    DrawEllipse(2.5,1.1);
 
     //JUPITER
     glPushMatrix();
-      glTranslated (1.7, 0.0, 0.0);
+      glTranslated (3.0, 0.0, 0.0);
       glColor3f (0.5, 0.0, 0.0);
       glutSolidSphere(0.1, 10, 8);
     glPopMatrix();
+    DrawEllipse(3.0,1.3);
 
     //SATURNO
     glPushMatrix();
-      glTranslated (2.0, 0.0, 0.0);
+      glTranslated (3.5, 0.0, 0.0);
       glColor3f (0.5, 0.3, 0.0);
       glutSolidSphere(0.091, 10, 8);
     glPopMatrix();
-
+    DrawEllipse(3.5,1.5);
 
     //URANO
     glPushMatrix();
-      glTranslated (2.3, 0.0, 0.0);
+      glTranslated (3.7, 0.0, 0.0);
       glColor3f (0.1, 0.3, 0.6);
       glutSolidSphere(0.061, 10, 8);
     glPopMatrix();
-
+    DrawEllipse(3.7,1.7);
 
     //NETUNO
     glPushMatrix();
-      glTranslated (2.5, 0.0, 0.0);
+      glTranslated (4.2, 0.0, 0.0);
       glColor3f (0.1, 0.1, 0.6);
       glutSolidSphere(0.051, 10, 8);
     glPopMatrix();
+    DrawEllipse(4.2,1.9);
 
     //PLUTAO
     glPushMatrix();
-      glTranslated (2.8, 0.0, 0.0);
+      glTranslated (4.6, 0.0, 0.0);
       glColor3f (0.1, 0.5, 0.8);
       glutSolidSphere(0.031, 10, 8);
     glPopMatrix();
+    DrawEllipse(4.6,2.1);
 
     glutSwapBuffers();
 }

@@ -110,7 +110,7 @@ void camRender() {
   glRotatef(xrot,1.0,0.0,0.0);      // rotacao no eixo x (esquerda e direita)
   glRotatef(yrot,0.0,1.0,0.0);      // rotacao no eixo y (esquerda e direita)
 //  glTranslated(-xpos,-ypos,-zpos);  // transladar a tela para a posicao da camera
-  glTranslated(-xpos, -ypos, -zpos);  // transladar a tela para a posicao da camera
+  glTranslated(-xpos - 2, -ypos + 2, -zpos + 6);  // transladar a tela para a posicao da camera
 }
 
 /*******************************************************************************
