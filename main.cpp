@@ -8,6 +8,8 @@
 
 #define DEG2RAD 3.14159/180.0
 
+float ano = 0;
+
 /* GLUT callback Handlers */
 
 void drawAxis()
@@ -151,10 +153,12 @@ static void display(void)
     glPushMatrix();
       glTranslated(0.0, 0.0, 0.0); //MATRIZ DE TRANSLAÇÃO COM A MATRIZ IDENTIDADE!!!
                                   //SOL NO CENTRO DA IMAGEM, É SÓ ALTERAR OS PARÂMETROS PRA MUDAR A POSIÇÃO
-      glutSolidSphere(0.7, 24, 24); //DESENHA A ESFERA, ALTERA O PRIMEIRO PARÂMETRO PRA AUMENTAR O RAIO
+      glutSolidSphere(0.5, 24, 24); //DESENHA A ESFERA, ALTERA O PRIMEIRO PARÂMETRO PRA AUMENTAR O RAIO
     glPopMatrix();
 
+    //MERCURIO
     glPushMatrix();
+      glRotatef (ano * 1.3, 0.0, 1.0, 0.0); //PARA ROTACIONAR
       glTranslated(0.55, 0.0, 0.0);
       glColor3f (1.0, 0.0, 0.0);
       glutSolidSphere(0.05, 10, 8);
@@ -162,6 +166,7 @@ static void display(void)
 
     //VENUS
     glPushMatrix();
+      glRotatef (ano * 1.1, 0.0, 1.0, 0.0);
       glTranslated(1.5, 0.0, 0.0);
       glColor3f (0.8, 0.4, 0.2);
       glutSolidSphere(0.068, 10, 8);
@@ -283,6 +288,40 @@ idle(void){
     glutPostRedisplay();
 }
 
+void spinDisplay(void)
+{
+  ano = (ano + 0.1) /*% 360*/;
+  //day  = (day + 2 ) /*% 360*/;
+  glutPostRedisplay();
+}
+
+
+/*
+  Esta função irá controlar os botões do mouse.
+  Se pressionado o botão da esquerda ela define
+  a função spinDisplay como a função de "idle" do GLUT
+  o comando glutIdelFunc, executa uma determinada função quando
+  nenhum evento estiver ocorrendo. (pressionamento de botões etc.)
+  Quando o botão do meio é pressionado a função de Idle recebe NULL
+  desabilitando a animação
+*/
+void mouse(int button, int state, int x, int y)
+{
+  switch (button) {
+      case GLUT_LEFT_BUTTON:
+           if (state == GLUT_DOWN)
+              glutIdleFunc(spinDisplay);
+           break;
+      case GLUT_MIDDLE_BUTTON:
+           if (state == GLUT_DOWN)
+              glutIdleFunc(NULL);
+           break;
+      default:
+           break;
+  }
+}
+
+
 /* Program entry point */
 
 int
@@ -298,8 +337,10 @@ main(int argc, char *argv[])
     glutReshapeFunc(resize);           // redimensiona
     glutDisplayFunc(display);          // exibe os objetos
     glutSpecialFunc(specialkey);       // teclas especiais
+    glutMouseFunc(mouse);
     glutKeyboardFunc(key);             // teclas
-    glutIdleFunc(idle);                // atualiza a tela (display)
+
+    //glutIdleFunc(idle);                // atualiza a tela (display)
 
     glClearColor(0.0,0.0,0.0,1);
 
