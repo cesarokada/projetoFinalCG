@@ -8,57 +8,21 @@
 
 #define DEG2RAD 3.14159/180.0
 
-float ano = 0;
-float contVenus = 0, contTerra = 0, contMarte = 0, contJupiter = 0;
-
-/* GLUT callback Handlers */
-
-void drawAxis()
-{
-    // desehar eixos
-    glDisable(GL_LIGHTING);
-    glBegin(GL_LINES);
-      int i, n=100;
-
-      // desenhar a grade do plano X-Z
-      // (apenas colorir quando desenhar o eixo origem)
-      for(i = 0; i < n; i++) {
-        // (cinza)
-        glColor3f(0.8, 0.8, 0.8);
-
-        // x (vermelho)
-        if (!(-50 + i*(100/n))) glColor3f(1, 0, 0);
-        glVertex3f(-50, -2, -50 + i*(100/n));
-        glVertex3f(50, -2, -50 + i*(100/n));
-
-        // z (azul)
-        if (!(-50 + i*(100/n))) glColor3f(0, 0, 1);
-        glVertex3f(-50 + i*(100/n), -2, -50);
-        glVertex3f(-50 + i*(100/n), -2, 50);
-      }
-
-      // y (verde)
-      glColor3f(0, 1, 0);
-      glVertex3f(0, -50, 0);
-      glVertex3f(0, 50, 0);
-
-    glEnd();
-    glEnable(GL_LIGHTING);
-}
+float contMercurio = 0, contVenus = 0, contTerra = 0, contMarte = 0,
+      contJupiter = 0, contSaturno = 0, contUrano = 0, contNetuno = 0,
+      contPlutao = 0;
 
 void DrawEllipse(float radiusX, float radiusZ)
 {
    int i;
 
    glBegin(GL_LINE_LOOP);
-
-   for(i=0;i<360;i++)
-   {
-      float rad = i*DEG2RAD;
-      glVertex3f(cos(rad)*radiusX,
-                  0,sin(rad)*radiusZ);
-   }
-
+       for(i=0;i<360;i++)
+       {
+          float rad = i*DEG2RAD;
+          glVertex3f(cos(rad)*radiusX,
+                      0,sin(rad)*radiusZ);
+       }
    glEnd();
 }
 
@@ -113,9 +77,6 @@ void specificVisualParameter(GLdouble fAspect)
 
      glMatrixMode( GL_MODELVIEW );
      glLoadIdentity();
-
-     //gluLookAt( lx, ly, lz, ax, ay, az, ux, uy, uz);
-
 }
 
 static void resize(int width, int height)
@@ -127,10 +88,40 @@ static void resize(int width, int height)
     specificVisualParameter(ar);
 }
 
+static void drawSun(){
+
+    glColor3f (1.0, 0.60, 0.09);
+    glPushMatrix();
+      glTranslatef(0.0, 0.0, 0.0);
+      glutSolidSphere(0.5, 24, 24);
+    glPopMatrix();
+}
+
+static void drawMercurio(){
+
+    float xMercurio, yMercurio; //Variáveis para o controle de rotação de Venus!
+
+    if(contMercurio > 359)
+        contMercurio = 0; //Completa um ciclo e recomeça outro
+    else
+        contMercurio += 0.1;
+
+    xMercurio = cos(contMercurio*DEG2RAD)*1.0;
+    yMercurio = sin(contMercurio*DEG2RAD)*0.5;
+
+    glPushMatrix();
+        glRotatef(1.0,0.0,1.0,0.0);
+        glTranslatef(xMercurio,0.0,yMercurio);
+        glColor3f(1.0, 0.0, 0.0);
+        glutSolidSphere(0.05, 10, 8);
+    glPopMatrix();
+
+    DrawEllipse(1.0, 0.5);
+}
+
 static void drawVenus(){
 
     float xVenus, yVenus; //Variáveis para o controle de rotação de Venus!
-    DrawEllipse(1.5,0.7);
 
     if(contVenus > 359)
         contVenus = 0; //Completa um ciclo e recomeça outro
@@ -141,11 +132,13 @@ static void drawVenus(){
     yVenus = sin(contVenus*DEG2RAD)*0.7;
 
     glPushMatrix();
-    glRotatef(1.0,0.0,1.0,0.0);
-    glTranslatef(xVenus,0.0,yVenus);
-    glColor3f (0.8, 0.4, 0.2);
-    glutSolidSphere(0.068, 10, 8);
+        glRotatef(1.0,0.0,1.0,0.0);
+        glTranslatef(xVenus,0.0,yVenus);
+        glColor3f (0.8, 0.4, 0.2);
+        glutSolidSphere(0.068, 10, 8);
     glPopMatrix();
+
+    DrawEllipse(1.5,0.7);
 }
 
 static void drawTerra(){
@@ -160,13 +153,11 @@ static void drawTerra(){
     xTerra = cos(contTerra*DEG2RAD)*2.0;
     yTerra = sin(contTerra*DEG2RAD)*0.9;
 
-
-
     glPushMatrix();
-    glRotatef(1.0,0.0,1.0,0.0);
-    glTranslatef(xTerra,0.0,yTerra);
-    glColor3f (0.2, 0.2, 1.0);
-    glutSolidSphere(0.08, 10, 8);
+        glRotatef(1.0,0.0,1.0,0.0);
+        glTranslatef(xTerra,0.0,yTerra);
+        glColor3f (0.2, 0.2, 1.0);
+        glutSolidSphere(0.08, 10, 8);
     glPopMatrix();
 
     DrawEllipse(2.0,0.9);
@@ -184,15 +175,14 @@ static void drawMarte(){
     xMarte = cos(contMarte*DEG2RAD)*2.5;
     yMarte = sin(contMarte*DEG2RAD)*1.1;
 
-
     glPushMatrix();
-      glRotatef(1.0,0.0,1.0,0.0);
-      glTranslatef(xMarte,0.0,yMarte);
-      glColor3f (0.6, 0.0, 0.0);
-      glutSolidSphere(0.08, 10, 8);
+        glRotatef(1.0,0.0,1.0,0.0);
+        glTranslatef(xMarte,0.0,yMarte);
+        glColor3f (0.6, 0.0, 0.0);
+        glutSolidSphere(0.08, 10, 8);
     glPopMatrix();
-    DrawEllipse(2.5,1.1);
 
+    DrawEllipse(2.5,1.1);
 }
 
 static void drawJupiter(){
@@ -210,24 +200,103 @@ static void drawJupiter(){
     glPushMatrix();
        glRotatef(1.0,0.0,1.0,0.0);
        glTranslatef(xJupiter,0.0,yJupiter);
+       glColor3f (0.5, 0.0, 0.0);
        glutSolidSphere(0.1, 10, 8);
     glPopMatrix();
-    DrawEllipse(3.0,1.3);
 
+    DrawEllipse(3.0,1.3);
+}
+
+static void drawSaturno(){
+
+    float xSaturno, ySaturno;
+
+    if(contSaturno > 359)
+        contSaturno = 0;
+    else
+        contSaturno += 0.01;
+
+    xSaturno = cos(contSaturno*DEG2RAD)*3.5;
+    ySaturno = sin(contSaturno*DEG2RAD)*1.5;
+
+    glPushMatrix();
+        glRotatef(1.0, 0.0, 1.0, 0.0);
+        glTranslatef(xSaturno, 0.0, ySaturno);
+        glColor3f(0.5, 0.3, 0.0);
+        glutSolidSphere(0.091, 10, 8);
+    glPopMatrix();
+
+    DrawEllipse(3.5,1.5);
+}
+
+static void drawUrano(){
+
+    float xUrano, yUrano;
+
+    if(contUrano > 359)
+        contUrano = 0;
+    else
+        contUrano += 0.01;
+
+    xUrano = cos(contUrano*DEG2RAD)*4.0;
+    yUrano = sin(contUrano*DEG2RAD)*1.7;
+
+    glPushMatrix();
+        glRotatef(1.0, 0.0, 1.0, 0.0);
+        glTranslatef(xUrano, 0.0, yUrano);
+        glColor3f (0.1, 0.3, 0.6);
+        glutSolidSphere(0.061, 10, 8);
+    glPopMatrix();
+
+    DrawEllipse(4.0,1.7);
+}
+
+static void drawNetuno(){
+
+    float xNetuno, yNetuno;
+
+    if(contNetuno > 359)
+        contNetuno = 0;
+    else
+        contNetuno += 0.5;
+
+    xNetuno = cos(contNetuno*DEG2RAD)*4.5;
+    yNetuno = sin(contNetuno*DEG2RAD)*1.9;
+
+    glPushMatrix();
+        glRotatef(1.0, 0.0, 1.0, 0.0);
+        glTranslatef(xNetuno, 0.0, yNetuno);
+        glColor3f(0.1, 0.1, 0.6);
+        glutSolidSphere(0.051, 10, 8);
+    glPopMatrix();
+
+    DrawEllipse(4.5, 1.9);
+}
+
+static void drawPlutao(){
+
+    float xPlutao, yPlutao;
+
+    if(contPlutao > 359)
+        contPlutao = 0;
+    else
+        contPlutao += 0.25;
+
+    xPlutao = cos(contPlutao*DEG2RAD)*5.0;
+    yPlutao = sin(contPlutao*DEG2RAD)*2.1;
+
+    glPushMatrix();
+    glRotatef(1.0, 0.0, 1.0, 0.0);
+      glTranslatef(xPlutao, 0.0, yPlutao);
+      glColor3f(0.1, 0.5, 0.8);
+      glutSolidSphere(0.031, 10, 8);
+    glPopMatrix();
+
+    DrawEllipse(5.0,2.1);
 }
 
 static void display(void)
 {
-    const double t = glutGet(GLUT_ELAPSED_TIME) / 1000.0;
-    const double a = t*90.0;
-
-    int year = 365;
-    int day = 24;
-
-    char title [100];
-    sprintf(title,  "Ambient %d | Diffuse: %d | Specular: %d", lAmbient, lDiffuse, lSpecular);
-    glutSetWindowTitle(title);
-
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glLoadIdentity();
@@ -236,24 +305,11 @@ static void display(void)
 
     drawLight();
 
-    //drawAxis();  // desenhar eixos
-
-
-    glColor3f (1.0, 0.60, 0.09);
-    glPushMatrix();
-      glTranslated(0.0, 0.0, 0.0); //MATRIZ DE TRANSLAÇÃO COM A MATRIZ IDENTIDADE!!!
-                                  //SOL NO CENTRO DA IMAGEM, É SÓ ALTERAR OS PARÂMETROS PRA MUDAR A POSIÇÃO
-      glutSolidSphere(0.5, 24, 24); //DESENHA A ESFERA, ALTERA O PRIMEIRO PARÂMETRO PRA AUMENTAR O RAIO
-    glPopMatrix();
-
-
+    //SOL
+    drawSun();
 
     //MERCURIO
-    glPushMatrix();
-      glTranslated(0.55, 0.0, 0.0);
-      glColor3f (1.0, 0.0, 0.0);
-      glutSolidSphere(0.05, 10, 8);
-    glPopMatrix();
+    drawMercurio();
 
     //VENUS
     drawVenus();
@@ -268,36 +324,16 @@ static void display(void)
     drawJupiter();
 
     //SATURNO
-    glPushMatrix();
-      glTranslated (3.5, 0.0, 0.0);
-      glColor3f (0.5, 0.3, 0.0);
-      glutSolidSphere(0.091, 10, 8);
-    glPopMatrix();
-    DrawEllipse(3.5,1.5);
+    drawSaturno();
 
     //URANO
-    glPushMatrix();
-      glTranslated (3.7, 0.0, 0.0);
-      glColor3f (0.1, 0.3, 0.6);
-      glutSolidSphere(0.061, 10, 8);
-    glPopMatrix();
-    DrawEllipse(3.7,1.7);
+    drawUrano();
 
     //NETUNO
-    glPushMatrix();
-      glTranslated (4.2, 0.0, 0.0);
-      glColor3f (0.1, 0.1, 0.6);
-      glutSolidSphere(0.051, 10, 8);
-    glPopMatrix();
-    DrawEllipse(4.2,1.9);
+    drawNetuno();
 
     //PLUTAO
-    glPushMatrix();
-      glTranslated (4.6, 0.0, 0.0);
-      glColor3f (0.1, 0.5, 0.8);
-      glutSolidSphere(0.031, 10, 8);
-    glPopMatrix();
-    DrawEllipse(4.6,2.1);
+    drawPlutao();
 
     glutSwapBuffers();
 }
@@ -345,36 +381,18 @@ static void key(unsigned char key, int x, int y){
     glutPostRedisplay();
 }
 
-static void
-idle(void){
+static void idle(void){
     glutPostRedisplay();
 }
 
-void spinDisplay(void)
-{
-  ano = (ano + 0.1) /*% 360*/;
-  //day  = (day + 2 ) /*% 360*/;
-  glutPostRedisplay();
-}
-
-
-/*
-  Esta função irá controlar os botões do mouse.
-  Se pressionado o botão da esquerda ela define
-  a função spinDisplay como a função de "idle" do GLUT
-  o comando glutIdelFunc, executa uma determinada função quando
-  nenhum evento estiver ocorrendo. (pressionamento de botões etc.)
-  Quando o botão do meio é pressionado a função de Idle recebe NULL
-  desabilitando a animação
-*/
 void mouse(int button, int state, int x, int y)
 {
   switch (button) {
       case GLUT_LEFT_BUTTON:
            if (state == GLUT_DOWN)
-              glutIdleFunc(spinDisplay);
+              glutIdleFunc(idle);
            break;
-      case GLUT_MIDDLE_BUTTON:
+      case GLUT_RIGHT_BUTTON:
            if (state == GLUT_DOWN)
               glutIdleFunc(NULL);
            break;
@@ -383,18 +401,14 @@ void mouse(int button, int state, int x, int y)
   }
 }
 
-
-/* Program entry point */
-
-int
-main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
     glutInit(&argc, argv);             // inicializa o GLUT
     glutInitWindowSize(640,480);       // tamanho da tela
     glutInitWindowPosition(10,10);     // posição da tela
     glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE | GLUT_DEPTH); // modo de visualização
 
-    glutCreateWindow("The Sims 4 - A evolução");    // cria uma janela com o titulo
+    glutCreateWindow("Sistema Solar");    // cria uma janela com o titulo
 
     glutReshapeFunc(resize);           // redimensiona
     glutDisplayFunc(display);          // exibe os objetos
@@ -402,7 +416,7 @@ main(int argc, char *argv[])
     glutMouseFunc(mouse);
     glutKeyboardFunc(key);             // teclas
 
-    //glutIdleFunc(idle);                // atualiza a tela (display)
+    glutIdleFunc(idle);                // atualiza a tela (display)
 
     glClearColor(0.0,0.0,0.0,1);
 
