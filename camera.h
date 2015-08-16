@@ -1,4 +1,3 @@
-
 void camRender();
 void camMouseMove(int x, int y);
 void camMouseMove2(int button, int state, int x, int y);

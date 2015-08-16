@@ -5,27 +5,7 @@
 #include <math.h>
 
 #include "camera.h"
-
-#define DEG2RAD 3.14159/180.0
-
-float contMercurio = 0, contVenus = 0, contTerra = 0, contMarte = 0,
-      contJupiter = 0, contSaturno = 0, contUrano = 0, contNetuno = 0,
-      contPlutao = 0;
-
-void DrawEllipse(float radiusX, float radiusZ)
-{
-   int i;
-
-   glBegin(GL_LINE_LOOP);
-       for(i=0;i<360;i++)
-       {
-          float rad = i*DEG2RAD;
-          glVertex3f(cos(rad)*radiusX,
-                      0,sin(rad)*radiusZ);
-       }
-   glEnd();
-}
-
+#include "planetas.h"
 
 int lAmbient = 35;
 int lDiffuse = 65;
@@ -88,251 +68,22 @@ static void resize(int width, int height)
     specificVisualParameter(ar);
 }
 
-static void drawSun(){
-
-    glColor3f (1.0, 0.60, 0.09);
-    glPushMatrix();
-      glTranslatef(0.0, 0.0, 0.0);
-      glutSolidSphere(0.5, 24, 24);
-    glPopMatrix();
-}
-
-static void drawMercurio(){
-
-    float xMercurio, yMercurio; //Variáveis para o controle de rotação de Venus!
-
-    if(contMercurio > 359)
-        contMercurio = 0; //Completa um ciclo e recomeça outro
-    else
-        contMercurio += 0.1;
-
-    xMercurio = cos(contMercurio*DEG2RAD)*1.0;
-    yMercurio = sin(contMercurio*DEG2RAD)*0.5;
-
-    glPushMatrix();
-        glRotatef(1.0,0.0,1.0,0.0);
-        glTranslatef(xMercurio,0.0,yMercurio);
-        glColor3f(1.0, 0.0, 0.0);
-        glutSolidSphere(0.05, 10, 8);
-    glPopMatrix();
-
-    DrawEllipse(1.0, 0.5);
-}
-
-static void drawVenus(){
-
-    float xVenus, yVenus; //Variáveis para o controle de rotação de Venus!
-
-    if(contVenus > 359)
-        contVenus = 0; //Completa um ciclo e recomeça outro
-    else
-        contVenus += 0.1;
-
-    xVenus = cos(contVenus*DEG2RAD)*1.5;
-    yVenus = sin(contVenus*DEG2RAD)*0.7;
-
-    glPushMatrix();
-        glRotatef(1.0,0.0,1.0,0.0);
-        glTranslatef(xVenus,0.0,yVenus);
-        glColor3f (0.8, 0.4, 0.2);
-        glutSolidSphere(0.068, 10, 8);
-    glPopMatrix();
-
-    DrawEllipse(1.5,0.7);
-}
-
-static void drawTerra(){
-
-    float xTerra, yTerra; //Variáveis para o controle de rotação de Venus!
-
-    if(contTerra > 359)
-        contTerra = 0; //Completa um ciclo e recomeça outro
-    else
-        contTerra += 0.365;//o incrimento determina o n
-
-    xTerra = cos(contTerra*DEG2RAD)*2.0;
-    yTerra = sin(contTerra*DEG2RAD)*0.9;
-
-    glPushMatrix();
-        glRotatef(1.0,0.0,1.0,0.0);
-        glTranslatef(xTerra,0.0,yTerra);
-        glColor3f (0.2, 0.2, 1.0);
-        glutSolidSphere(0.08, 10, 8);
-    glPopMatrix();
-
-    DrawEllipse(2.0,0.9);
-}
-
-static void drawMarte(){
-
-    float xMarte, yMarte; //Variáveis para o controle de rotação de Venus!
-
-    if(contMarte > 359)
-        contMarte = 0; //Completa um ciclo e recomeça outro
-    else
-        contMarte += 0.01;//o incrimento determina o n
-
-    xMarte = cos(contMarte*DEG2RAD)*2.5;
-    yMarte = sin(contMarte*DEG2RAD)*1.1;
-
-    glPushMatrix();
-        glRotatef(1.0,0.0,1.0,0.0);
-        glTranslatef(xMarte,0.0,yMarte);
-        glColor3f (0.6, 0.0, 0.0);
-        glutSolidSphere(0.08, 10, 8);
-    glPopMatrix();
-
-    DrawEllipse(2.5,1.1);
-}
-
-static void drawJupiter(){
-
-    float xJupiter, yJupiter; //Variáveis para o controle de rotação de Venus!
-
-    if(contJupiter > 359)
-        contJupiter = 0; //Completa um ciclo e recomeça outro
-    else
-        contJupiter += 0.02;//o incrimento determina o n
-
-    xJupiter = cos(contJupiter*DEG2RAD)*3.0;
-    yJupiter = sin(contJupiter*DEG2RAD)*1.3;
-
-    glPushMatrix();
-       glRotatef(1.0,0.0,1.0,0.0);
-       glTranslatef(xJupiter,0.0,yJupiter);
-       glColor3f (0.5, 0.0, 0.0);
-       glutSolidSphere(0.1, 10, 8);
-    glPopMatrix();
-
-    DrawEllipse(3.0,1.3);
-}
-
-static void drawSaturno(){
-
-    float xSaturno, ySaturno;
-
-    if(contSaturno > 359)
-        contSaturno = 0;
-    else
-        contSaturno += 0.01;
-
-    xSaturno = cos(contSaturno*DEG2RAD)*3.5;
-    ySaturno = sin(contSaturno*DEG2RAD)*1.5;
-
-    glPushMatrix();
-        glRotatef(1.0, 0.0, 1.0, 0.0);
-        glTranslatef(xSaturno, 0.0, ySaturno);
-        glColor3f(0.5, 0.3, 0.0);
-        glutSolidSphere(0.091, 10, 8);
-    glPopMatrix();
-
-    DrawEllipse(3.5,1.5);
-}
-
-static void drawUrano(){
-
-    float xUrano, yUrano;
-
-    if(contUrano > 359)
-        contUrano = 0;
-    else
-        contUrano += 0.01;
-
-    xUrano = cos(contUrano*DEG2RAD)*4.0;
-    yUrano = sin(contUrano*DEG2RAD)*1.7;
-
-    glPushMatrix();
-        glRotatef(1.0, 0.0, 1.0, 0.0);
-        glTranslatef(xUrano, 0.0, yUrano);
-        glColor3f (0.1, 0.3, 0.6);
-        glutSolidSphere(0.061, 10, 8);
-    glPopMatrix();
-
-    DrawEllipse(4.0,1.7);
-}
-
-static void drawNetuno(){
-
-    float xNetuno, yNetuno;
-
-    if(contNetuno > 359)
-        contNetuno = 0;
-    else
-        contNetuno += 0.5;
-
-    xNetuno = cos(contNetuno*DEG2RAD)*4.5;
-    yNetuno = sin(contNetuno*DEG2RAD)*1.9;
-
-    glPushMatrix();
-        glRotatef(1.0, 0.0, 1.0, 0.0);
-        glTranslatef(xNetuno, 0.0, yNetuno);
-        glColor3f(0.1, 0.1, 0.6);
-        glutSolidSphere(0.051, 10, 8);
-    glPopMatrix();
-
-    DrawEllipse(4.5, 1.9);
-}
-
-static void drawPlutao(){
-
-    float xPlutao, yPlutao;
-
-    if(contPlutao > 359)
-        contPlutao = 0;
-    else
-        contPlutao += 0.25;
-
-    xPlutao = cos(contPlutao*DEG2RAD)*5.0;
-    yPlutao = sin(contPlutao*DEG2RAD)*2.1;
-
-    glPushMatrix();
-    glRotatef(1.0, 0.0, 1.0, 0.0);
-      glTranslatef(xPlutao, 0.0, yPlutao);
-      glColor3f(0.1, 0.5, 0.8);
-      glutSolidSphere(0.031, 10, 8);
-    glPopMatrix();
-
-    DrawEllipse(5.0,2.1);
-}
-
 static void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
     glLoadIdentity();
 
     camRender();
-
     drawLight();
-
-    //SOL
     drawSun();
-
-    //MERCURIO
     drawMercurio();
-
-    //VENUS
     drawVenus();
-
-    //TERRA
     drawTerra();
-
-    //MARTE
     drawMarte();
-
-    //JUPITER
     drawJupiter();
-
-    //SATURNO
     drawSaturno();
-
-    //URANO
     drawUrano();
-
-    //NETUNO
     drawNetuno();
-
-    //PLUTAO
     drawPlutao();
 
     glutSwapBuffers();
@@ -382,6 +133,7 @@ static void key(unsigned char key, int x, int y){
 }
 
 static void idle(void){
+
     glutPostRedisplay();
 }
 

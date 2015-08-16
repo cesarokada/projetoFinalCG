@@ -16,16 +16,14 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp \
-    tv.cpp \
     camera.cpp \
-    ventilador.cpp
+    planetas.cpp
 
 LIBS += -lglut
 LIBS += -lGL
 LIBS += -lGLU
 
 HEADERS += \
-    tv.h \
     camera.h \
-    ventilador.h
+    planetas.h
 
