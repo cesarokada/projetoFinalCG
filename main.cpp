@@ -123,22 +123,22 @@ static void key(unsigned char key, int x, int y){
         case 'A':
             camMoveLeft();
             break;
-        case 'G':
+        case 'R':
             if (lAmbient < 100) lAmbient++;
             break;
-        case 'H':
+        case 'T':
             if (lDiffuse < 100) lDiffuse++;
             break;
-        case 'J':
+        case 'Y':
             if (lSpecular < 100) lSpecular++;
             break;
-        case 'B':
+        case 'F':
             if (lAmbient > 0) lAmbient--;
             break;
-        case 'N':
+        case 'G':
             if (lDiffuse > 0) lDiffuse--;
             break;
-        case 'M':
+        case 'H':
             if (lSpecular > 0) lSpecular--;
             break;
         case 27 : // ESC
