@@ -7,6 +7,9 @@
 #include "camera.h"
 #include "planetas.h"
 
+/********************************************************
+ *          Valores iniciais da iluminação
+*******************************************************/
 int lAmbient = 35;
 int lDiffuse = 65;
 int lSpecular = 50;
@@ -14,16 +17,16 @@ float ar;
 
 void drawLight() {
 
-  GLfloat lightPos[] = { 0.0, 14.5, 0.0, 1.0 };
+  GLfloat lightPos[] = { 0.0, 0.0, 0.0, 1.0 };
 
   glDisable(GL_LIGHTING);
 
-    // desenhar esfera
+    // desenha o Sol, fonte de Luz
   glPushMatrix();
-    glNormal3f(0.0, -1.0, 0.0);
-    glColor3f( 1.0, 1.0, 1.0 );
+    glNormal3f(0.0, 0.0, 0.0);
+    glColor3f(1.0, 0.60, 0.09);
         glTranslated(lightPos[0], lightPos[1], lightPos[2]);    // posicao da luz
-    glutSolidSphere(0.25, 24, 24);
+    glutSolidSphere(2.0, 100, 100);
   glPopMatrix();
 
   glEnable(GL_NORMALIZE);
@@ -73,9 +76,24 @@ static void display(void)
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
 
+    GLfloat Ambient[]   = {0.01*lAmbient ,0.01*lAmbient ,0.01*lAmbient ,1.0};
+    GLfloat Diffuse[]   = {0.01*lDiffuse ,0.01*lDiffuse ,0.01*lDiffuse ,1.0};
+    GLfloat Specular[]  = {0.01*lSpecular,0.01*lSpecular,0.01*lSpecular,1.0};
+    GLfloat shi[]  = {10.0};
+    GLfloat no_mat[] = { 0.0, 0.0, 0.0, 1.0 };
+
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, Ambient);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, Diffuse);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, Specular);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SHININESS, shi);
+    glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, no_mat);
+
+    char lightControl [100];
+    sprintf(lightControl,  "Ambiente %d | Diffusa: %d | Specular: %d", lAmbient, lDiffuse, lSpecular);
+    glutSetWindowTitle(lightControl);
+
     camRender();
-    drawLight();
-    drawSun();
+    drawLight(); //desenha e define a fonte luminosa (Sol)
     drawMercurio();
     drawVenus();
     drawTerra();

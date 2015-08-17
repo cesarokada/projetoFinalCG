@@ -22,15 +22,6 @@ void DrawEllipse(float radiusX, float radiusZ)
    glEnd();
 }
 
-void drawSun(){
-
-    glColor3f (1.0, 0.60, 0.09);
-    glPushMatrix();
-      glTranslatef(0.0, 0.0, 0.0);
-      glutSolidSphere(2.0, 100, 100);
-    glPopMatrix();
-}
-
 void drawMercurio(){
 
     float xMercurio, yMercurio; //Variáveis para o controle de rotação de Venus!
@@ -92,7 +83,6 @@ void drawTerra(){
         glColor3f (0.2, 0.2, 1.0);
         glutSolidSphere(0.1, 100, 100);
     glPopMatrix();
-
     DrawEllipse(4.2, 3.2);
 }
 
