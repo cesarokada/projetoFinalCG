@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <math.h>
+#include <string.h>
 
 #include "camera.h"
 #include "planetas.h"
@@ -71,6 +72,7 @@ static void resize(int width, int height)
     specificVisualParameter(ar);
 }
 
+
 static void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -89,7 +91,7 @@ static void display(void)
     glMaterialfv(GL_FRONT_AND_BACK, GL_EMISSION, no_mat);
 
     char lightControl [100];
-    sprintf(lightControl,  "Ambiente %d | Diffusa: %d | Specular: %d", lAmbient, lDiffuse, lSpecular);
+    sprintf(lightControl,"Sistema Solar   |   Ambiente: %d   Difusa: %d   Especular: %d", lAmbient, lDiffuse, lSpecular);
     glutSetWindowTitle(lightControl);
 
     camRender();
